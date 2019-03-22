@@ -7,7 +7,8 @@
 # #open ggplot2 library, we installed this morning
 library("ggplot2")
 
-#initiate new variable called gapminder, to read gapminder file in data folder
+#initiate new variable called gapminder, to read gapminder file in 
+#data folder
 gapminder <- read.csv("data/gapminder_data.csv", header=TRUE)
 
 #visually inspect gapminder
@@ -27,8 +28,7 @@ tail(gapminder)
 
 #let's look at the middle
 gapminder[900:905, ]
-
-
+gapminder[900:905,5:6]
 
 #call ggplot function to create new plot, GLOBAL option, applies 
 #to ALL layers
@@ -53,7 +53,8 @@ ggplot(data = gapminder, aes(x = year, y = lifeExp)) +
 #what trends do you see? are they what you expected?
 #added col = continent within aes()
 ggplot(data = gapminder, aes(x = year, y = lifeExp, 
-                             col = continent)) + geom_point()
+                             col = continent)) + 
+  geom_point()
 
 ###LAYERS
 #scatterplot is hard to visualize change over time though
@@ -62,7 +63,8 @@ ggplot(data = gapminder, aes(x = year, y = lifeExp,
 #by aesthetic draws line for each country
 #added by=country within aes()
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country, 
-                              color = continent )) + geom_line()
+                              color = continent )) + 
+  geom_line()
 
 #what if? side note: add column of countries as characters, instead of factors
 #introduce here as.character
@@ -71,13 +73,16 @@ gapminder2 <- cbind(gapminder,countries_character)
 
 ggplot(data = gapminder2, aes( x=year, y=lifeExp, 
                                by=countries_character, 
-                              color = continent )) + geom_line()
+                              color = continent )) + 
+  geom_line()
 # plots came out the same for countries read as factors vs character
 
 #try plot for line for each continent
 #added geom_line() and geom_point() 
-ggplot(data = gapminder2, aes( x=year, y=lifeExp, 
-                               color = continent )) + geom_line() + geom_point()
+ggplot(data = gapminder, aes( x=year, y=lifeExp, 
+                               color = continent )) + 
+  geom_line() + 
+  geom_point()
 
 ##CHECK IN: what does "aes" do?
 
@@ -88,35 +93,45 @@ ggplot(data = gapminder2, aes( x=year, y=lifeExp,
 #what if? side note: changed background
 #added theme_bw()
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country, 
-                              color = continent )) + geom_line() +
-  geom_point() + theme_bw()
+                              color = continent )) + 
+  geom_line() +
+  geom_point() + 
+  theme_bw()
 
 #draw points on top of lines, black color for points
 #added aes parameter within geom_line
 #not global! notice our points are now black
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
-  geom_line(aes(color=continent)) + geom_point()
+  geom_line(aes(color=continent)) + 
+  geom_point()
 
 #TIP
 #change color of all lines to purple
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
-  geom_line(color="purple") + geom_point()
+  geom_line(color="purple") + 
+  geom_point()
 #change color of all lines to blue
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
-  geom_line(color="blue") + geom_point()
+  geom_line(color="blue") + 
+  geom_point()
+
+#parameters within aes are looking for variables within your dataset
+#set specific colors outside of aes
 
 ##easy CHALLENGE 3 (think pair share)
 #switch order of point and line layers from previous example.
 #what happens?
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
- geom_point() +  geom_line(aes(color=continent))
+  geom_point() +  
+  geom_line(aes(color=continent))
 
 #TRANSFORMATION AND STATISTICS
 #overlay statistical models over data
 #going back to scatterplot, similar to our first plot 
 #color by continent
 ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, 
-                             color=continent)) + geom_point()
+                             color=continent)) + 
+  geom_point()
 
 #currently it's hard to see relationship between points due to strong outliers
 #in GDP per capita
@@ -131,40 +146,44 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
 #alpha = 0.5 makes points transparent 50%
 ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
                              color = continent)) + 
-  geom_point(alpha = 0.5) + scale_x_log10()
+  geom_point(alpha = 0.5) + 
+  scale_x_log10()
 
 #side note: alpha can also be mapped to a variable in the data
 #give different transparency to each continent with
 #geom_point(aes(alpha = continent))
 ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
                              color = continent)) + 
-  geom_point(aes(alpha = continent)) + scale_x_log10()
+  geom_point(aes(alpha = continent)) + 
+  scale_x_log10()
 
 #geom_smooth, adding another layer here
-ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
-                             color = continent)) + 
-  geom_point(alpha = 0.5) + scale_x_log10() + 
+#geom_smooth(method = "lm")
+#lm = fit linear models
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + 
+  geom_point() + 
+  scale_x_log10() + 
   geom_smooth(method ="lm")
 
 #make line thicker
-ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
-                             color = continent)) + 
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + 
   geom_point(alpha = 0.5) + 
   scale_x_log10() + 
-  geom_smooth(method ="lm", size=1.5)
+  geom_smooth(method ="lm", col="red",size=1.5)
 
 #CHALLENGE 4a (think pair share)
 #modify color and size of points on the point layer
 #in the previous example
 #hint do not use the aes function
-ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
-                             color = continent)) + 
-  geom_point(alpha = 0.5, size=3, shape = 2) + 
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,color=continent)) + 
+  #geom_point(alpha = 0.5, size=3, shape = 2) + 
   scale_x_log10() + 
-  geom_smooth(method ="lm", size=1.5)
+  geom_smooth(method ="lm")
 
 #CHALLENGE 4b (think pair share)
-#try with a non-factor, color = countries_as_character
+#modify your above solution so that points are now a different shape
+#and are colored by continent with new trendlines
+#hint: color argument can be used inside aes
 ggplot(data = gapminder2, aes(x = gdpPercap, y = lifeExp,
                              color = year)) + 
   geom_point(alpha = 0.5, size=3, shape = 2) + 
