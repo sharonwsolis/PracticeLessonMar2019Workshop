@@ -40,16 +40,18 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
   geom_point()
 
 
-#easy CHALLENGE 1
+#easy CHALLENGE 1 (think pair share)
 #modify the line below to show how life expectancy has changed 
 #over time
+#changed x = year
 ggplot(data = gapminder, aes(x = year, y = lifeExp)) + 
   geom_point()
 
-#medium CHALLENGE 2
+#medium CHALLENGE 2 (think pair share)
 #aesthetic property of color
 #modify code to color the points by continent column
 #what trends do you see? are they what you expected?
+#added col = continent within aes()
 ggplot(data = gapminder, aes(x = year, y = lifeExp, 
                              col = continent)) + geom_point()
 
@@ -58,10 +60,12 @@ ggplot(data = gapminder, aes(x = year, y = lifeExp,
 #line plot instead
 #add geom_line layer instead of geom_point
 #by aesthetic draws line for each country
+#added by=country within aes()
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country, 
                               color = continent )) + geom_line()
 
 #what if? side note: add column of countries as characters, instead of factors
+#introduce here as.character
 countries_character <- as.character(gapminder$country)
 gapminder2 <- cbind(gapminder,countries_character)
 
@@ -71,9 +75,9 @@ ggplot(data = gapminder2, aes( x=year, y=lifeExp,
 # plots came out the same for countries read as factors vs character
 
 #try plot for line for each continent
+#added geom_line() and geom_point() 
 ggplot(data = gapminder2, aes( x=year, y=lifeExp, 
-                               color = continent )) + geom_line() +
-  geom_point()
+                               color = continent )) + geom_line() + geom_point()
 
 ##CHECK IN: what does "aes" do?
 
@@ -82,11 +86,14 @@ ggplot(data = gapminder2, aes( x=year, y=lifeExp,
 #visualize both lines and points
 #add another layer
 #what if? side note: changed background
+#added theme_bw()
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country, 
                               color = continent )) + geom_line() +
   geom_point() + theme_bw()
 
 #draw points on top of lines, black color for points
+#added aes parameter within geom_line
+#not global! notice our points are now black
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
   geom_line(aes(color=continent)) + geom_point()
 
@@ -98,7 +105,7 @@ ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
   geom_line(color="blue") + geom_point()
 
-##easy CHALLENGE 3
+##easy CHALLENGE 3 (think pair share)
 #switch order of point and line layers from previous example.
 #what happens?
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
@@ -106,15 +113,32 @@ ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
 
 #TRANSFORMATION AND STATISTICS
 #overlay statistical models over data
+#going back to scatterplot, similar to our first plot 
 #color by continent
 ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, 
                              color=continent)) + geom_point()
 
-#use scale function (change x axis), 
+#currently it's hard to see relationship between points due to strong outliers
+#in GDP per capita
+#let's change scale of units on x axis using scale function
+#log 10 function applies transformation to values of gdpPercap column 
+#each multiple of 10 now corresponds to an increase in 1 on transformed scale
+#GDP per capita of 1,000 is now 3 on x axis
+#value of 10,000 corresponds to 4 on x axis
+#value of 100,000 corresponds to 5 on x axis
+##
 #using alpha function (transparency)
+#alpha = 0.5 makes points transparent 50%
 ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
                              color = continent)) + 
   geom_point(alpha = 0.5) + scale_x_log10()
+
+#side note: alpha can also be mapped to a variable in the data
+#give different transparency to each continent with
+#geom_point(aes(alpha = continent))
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
+                             color = continent)) + 
+  geom_point(aes(alpha = continent)) + scale_x_log10()
 
 #geom_smooth, adding another layer here
 ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
@@ -129,7 +153,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
   scale_x_log10() + 
   geom_smooth(method ="lm", size=1.5)
 
-#CHALLENGE 4a
+#CHALLENGE 4a (think pair share)
 #modify color and size of points on the point layer
 #in the previous example
 #hint do not use the aes function
@@ -139,10 +163,12 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
   scale_x_log10() + 
   geom_smooth(method ="lm", size=1.5)
 
-#CHALLENGE 4b
+#CHALLENGE 4b (think pair share)
 #try with a non-factor, color = countries_as_character
 ggplot(data = gapminder2, aes(x = gdpPercap, y = lifeExp,
                              color = year)) + 
   geom_point(alpha = 0.5, size=3, shape = 2) + 
   scale_x_log10() + 
   geom_smooth(method ="lm", size=1.5)
+
+##MULTI-PANEL FIGURES
