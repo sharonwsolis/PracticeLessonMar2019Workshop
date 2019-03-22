@@ -1,8 +1,8 @@
 # #practice for lesson
 # #episode 8 creating publication-quality graphics with ggplot2
 # #software carpentry workshop
-# #friday, february 22, 2019
-# #sharon solis
+# #date: friday, march 22, 2019
+# #author: sharon solis
 # 
 # #open ggplot2 library, we installed this morning
 library("ggplot2")
@@ -12,7 +12,7 @@ gapminder <- read.csv("data/gapminder_data.csv", header=TRUE)
 
 #visually inspect gapminder
 
-#data subsetting
+#DATA SUBSETTING
 #looking at row 1, column 1
 gapminder[1,1]
 
@@ -61,7 +61,7 @@ ggplot(data = gapminder, aes(x = year, y = lifeExp,
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country, 
                               color = continent )) + geom_line()
 
-# add column of countries as characters, instead of factors
+#what if? side note: add column of countries as characters, instead of factors
 countries_character <- as.character(gapminder$country)
 gapminder2 <- cbind(gapminder,countries_character)
 
@@ -75,11 +75,13 @@ ggplot(data = gapminder2, aes( x=year, y=lifeExp,
                                color = continent )) + geom_line() +
   geom_point()
 
+##CHECK IN: what does "aes" do?
+
 #try plotting year as factor here
 
 #visualize both lines and points
 #add another layer
-#changed background
+#what if? side note: changed background
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country, 
                               color = continent )) + geom_line() +
   geom_point() + theme_bw()
@@ -89,9 +91,12 @@ ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
   geom_line(aes(color=continent)) + geom_point()
 
 #TIP
-#change color of all lines to blue
+#change color of all lines to purple
 ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
   geom_line(color="purple") + geom_point()
+#change color of all lines to blue
+ggplot(data = gapminder, aes( x=year, y=lifeExp, by=country )) +
+  geom_line(color="blue") + geom_point()
 
 ##easy CHALLENGE 3
 #switch order of point and line layers from previous example.
@@ -124,7 +129,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
   scale_x_log10() + 
   geom_smooth(method ="lm", size=1.5)
 
-#Challenge
+#CHALLENGE 4a
 #modify color and size of points on the point layer
 #in the previous example
 #hint do not use the aes function
@@ -134,6 +139,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
   scale_x_log10() + 
   geom_smooth(method ="lm", size=1.5)
 
+#CHALLENGE 4b
 #try with a non-factor, color = countries_as_character
 ggplot(data = gapminder2, aes(x = gdpPercap, y = lifeExp,
                              color = year)) + 
